@@ -1,4 +1,5 @@
-name: Deploy to AWS Amplify
+# .github/workflows/deploy-main.yml
+name: Deploy Frontend to AWS Amplify
 
 on:
   push:
@@ -11,51 +12,24 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v2
       with:
-        node-version: '20'  # Använd Node.js version 20
-
-    - name: Navigate to the app directory
-      run: cd meetup-app  # Gå till mappen där package.json finns
+        node-version: '16'  # Du kan justera Node.js versionen om du behöver
 
     - name: Install dependencies
-      run: |
-        cd meetup-app  # Gå till mappen där package.json finns
-        npm install
-
-    - name: Install Amplify CLI
-      run: |
-        cd meetup-app  # Gå till mappen där package.json finns
-        npm install -g @aws-amplify/cli
-
-    - name: Install AWS CLI
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y python3-pip
-        pip3 install awscli
-
-    - name: Check AWS CLI version
-      run: aws --version  # Kontrollera att AWS CLI är installerad korrekt
-
-    - name: Configure AWS CLI
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Hämta från secrets
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Hämta från secrets
-        AWS_REGION: 'eu-north-1'  # Ersätt med din region om det behövs
-      run: |
-        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-        aws configure set region $AWS_REGION
+      run: npm install  # Installera beroenden i roten där package.json ligger
 
     - name: Build the app
-      run: |
-        cd meetup-app  # Gå till mappen där package.json finns
-        npm run build
+      run: npm run build  # Bygga appen, se till att det finns ett build-skript i din package.json
 
     - name: Deploy to AWS Amplify
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Sätt dessa värden i GitHub Secrets
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'eu-north-1'  # Ersätt med din region om det behövs
       run: |
-        cd meetup-app  # Gå till mappen där amplify-config finns
-        amplify publish --verbose
+        npm install -g @aws-amplify/cli  # Installera Amplify CLI
+        amplify publish  # Publicera till AWS Amplify
