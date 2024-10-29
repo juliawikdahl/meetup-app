@@ -24,6 +24,13 @@ jobs:
       - name: Build the app
         run: npm run build
 
+      - name: Configure AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Lagra din AWS Access Key i GitHub Secrets
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Lagra din AWS Secret Access Key i GitHub Secrets
+          aws-region: us-east-1  # Välj din region
+
       - name: Deploy to S3
         run: |
-          echo "Deploy your app to S3 or GitHub Pages here"
+          aws s3 sync ./build s3://meetup-app-dev-project --delete
