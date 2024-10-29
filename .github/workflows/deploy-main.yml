@@ -26,8 +26,17 @@ jobs:
 
     - name: Deploy to AWS Amplify
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ ZxsFzMsn7iOos5jZhIJKy2Dmb7mmdfIGnkSQ+WxT }}
+        AWS_SECRET_ACCESS_KEY: ${{ AKIA356SJ2O52NB3LJOL }}
+        AWS_REGION: 'eu-north-1' # Ersätt med din region om det behövs
       run: |
-        # Här kan du lägga till kommandon för att deploya till AWS Amplify
+        # Installera AWS CLI om det inte redan finns
+        pip install awscli
+
+        # Konfigurera AWS CLI
+        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+        aws configure set region $AWS_REGION
+
+        # Deploya till AWS Amplify
         amplify publish
