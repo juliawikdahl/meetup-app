@@ -18,9 +18,6 @@ jobs:
       with:
         node-version: '20'  # Använd Node.js version 20
 
-    - name: Navigate to project directory
-      run: cd meetup-app  # Gå till mappen där package.json finns
-
     - name: Install dependencies
       run: |
         cd meetup-app  # Gå till mappen där package.json finns
