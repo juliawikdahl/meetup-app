@@ -1,4 +1,4 @@
-name: Build and Deploy to Dev
+name: Deploy to Dev
 
 on:
   push:
@@ -10,20 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'  # Använd den senaste versionen
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  # eller versionen du använder
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Build the app
-      run: npm run build
+      - name: Build the app
+        run: npm run build
 
-    - name: Deploy
-      run: |
-        echo "Deploy your app to Dev environment here"
+      - name: Deploy to S3
+        run: |
+          echo "Deploy your app to S3 or GitHub Pages here"
