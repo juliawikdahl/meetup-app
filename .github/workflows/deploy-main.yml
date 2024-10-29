@@ -16,30 +16,46 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20'  # Bytt till Node.js version 20
+        node-version: '20'  # Använd Node.js version 20
+
+    - name: Navigate to project directory
+      run: cd meetup-app  # Gå till mappen där package.json finns
 
     - name: Install dependencies
-      run: npm install
-
-    - name: Build the app
-      run: npm run build
+      run: |
+        cd meetup-app  # Gå till mappen där package.json finns
+        npm install
 
     - name: Install Amplify CLI
-      run: npm install -g @aws-amplify/cli  # Installera Amplify CLI
+      run: |
+        cd meetup-app  # Gå till mappen där package.json finns
+        npm install -g @aws-amplify/cli
 
-    - name: Deploy to AWS Amplify
+    - name: Install AWS CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
+        pip3 install awscli
+
+    - name: Check AWS CLI version
+      run: aws --version  # Kontrollera att AWS CLI är installerad korrekt
+
+    - name: Configure AWS CLI
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Hämta från secrets
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Hämta från secrets
         AWS_REGION: 'eu-north-1'  # Ersätt med din region om det behövs
       run: |
-        # Installera AWS CLI om det inte redan finns
-        pip install awscli
-
-        # Konfigurera AWS CLI
         aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
         aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
         aws configure set region $AWS_REGION
 
-        # Deploya till AWS Amplify med verbose output
+    - name: Build the app
+      run: |
+        cd meetup-app  # Gå till mappen där package.json finns
+        npm run build
+
+    - name: Deploy to AWS Amplify
+      run: |
+        cd meetup-app  # Gå till mappen där amplify-config finns
         amplify publish --verbose
