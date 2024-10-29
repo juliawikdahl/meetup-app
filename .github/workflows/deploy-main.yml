@@ -11,18 +11,21 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3  # Uppdaterad version
+      uses: actions/checkout@v3
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3  # Uppdaterad version
+      uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '20'  # Bytt till Node.js version 20
 
     - name: Install dependencies
       run: npm install
 
     - name: Build the app
       run: npm run build
+
+    - name: Install Amplify CLI
+      run: npm install -g @aws-amplify/cli  # Installera Amplify CLI
 
     - name: Deploy to AWS Amplify
       env:
@@ -38,7 +41,5 @@ jobs:
         aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
         aws configure set region $AWS_REGION
 
-        
         # Deploya till AWS Amplify med verbose output
         amplify publish --verbose
-
