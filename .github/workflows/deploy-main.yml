@@ -20,19 +20,19 @@ jobs:
         node-version: '20'
 
     - name: Install dependencies
-      working-directory: ./meetup-app  # Ange rätt arbetskatalog
-      run: npm install
+      working-directory: ./
+      run: npm install  # Kör npm install i roten av projektet
 
     - name: Build the app
-      working-directory: ./meetup-app  # Ange rätt arbetskatalog
-      run: npm run build
+      working-directory: ./
+      run: npm run build  # Kör build-skriptet i roten av projektet
 
     - name: Install Amplify CLI
-      working-directory: ./meetup-app  # Ange rätt arbetskatalog
+      working-directory: ./
       run: npm install -g @aws-amplify/cli
 
     - name: Deploy to AWS Amplify
-      working-directory: ./meetup-app  # Ange rätt arbetskatalog
+      working-directory: ./
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
