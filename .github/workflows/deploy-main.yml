@@ -19,8 +19,8 @@ jobs:
       with:
         node-version: '20'  # Använd Node.js version 20
 
-    - name: Navigate to app directory
-      run: cd meetup-app  # Navigera till din app-mapp
+    - name: List files for debugging
+      run: ls -R  # Lista alla filer och mappar rekursivt för att se strukturen
 
     - name: Install dependencies
       working-directory: meetup-app  # Ange arbetskatalog för att installera beroenden
