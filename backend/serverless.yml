@@ -1,0 +1,97 @@
+service: meetup-backend  
+
+provider:
+  name: aws
+  runtime: nodejs18.x 
+  region: eu-north-1
+  stage: dev
+  environment:
+    JWT_SECRET: ${env:JWT_SECRET}  
+    USERS_TABLE: Users 
+    MEETUPS_TABLE: Meetups 
+  deploymentBucket:
+    name: meetup-app-dev-project 
+
+functions:
+  getAllMeetups:
+    handler: handler.getAllMeetups
+    events:
+      - http:
+          path: meetups
+          method: get
+
+  getMeetupById:
+    handler: handler.getMeetupById
+    events:
+      - http:
+          path: meetups/{id}
+          method: get
+
+  createMeetup:
+    handler: handler.createMeetup
+    events:
+      - http:
+          path: meetups
+          method: post
+
+  attendMeetup:
+    handler: handler.attendMeetup
+    events:
+      - http:
+          path: meetups/{id}/attend
+          method: post
+
+  cancelAttendance:
+    handler: handler.cancelAttendance
+    events:
+      - http:
+          path: meetups/{id}/cancel
+          method: post
+
+  getUserMeetups:
+    handler: handler.getUserMeetups
+    events:
+      - http:
+          path: user/meetups
+          method: get
+          authorizer: aws_iam
+
+  register:
+    handler: authController.register
+    events:
+      - http:
+          path: auth/register
+          method: post
+
+  login:
+    handler: authController.login
+    events:
+      - http:
+          path: auth/login
+          method: post
+
+resources:
+  Resources:
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Users 
+        AttributeDefinitions:
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    MeetupsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Meetups
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
