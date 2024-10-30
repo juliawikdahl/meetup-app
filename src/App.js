@@ -11,7 +11,7 @@ import MyPastMeetups from './components/MyPastMeetups';
 import './styles/App.css'; 
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [ setIsLoggedIn] = useState(false);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
