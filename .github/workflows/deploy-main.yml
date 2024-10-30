@@ -14,13 +14,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: List files for debugging
+      run: ls -R  # Lista alla filer och mappar rekursivt för att se strukturen
+
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '20'  # Använd Node.js version 20
-
-    - name: List files for debugging
-      run: ls -R  # Lista alla filer och mappar rekursivt för att se strukturen
 
     - name: Install dependencies
       working-directory: meetup-app  # Ange arbetskatalog för att installera beroenden
