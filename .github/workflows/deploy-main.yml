@@ -1,4 +1,4 @@
-
+# .github/workflows/deploy-main.yml
 name: Deploy Frontend to AWS Amplify
 
 on:
@@ -19,16 +19,23 @@ jobs:
       with:
         node-version: '20'  # Använd Node.js version 20
 
+    - name: Navigate to app directory
+      run: cd meetup-app  # Navigera till din app-mapp
+
     - name: Install dependencies
+      working-directory: meetup-app  # Ange arbetskatalog för att installera beroenden
       run: npm install  # Installera beroenden i roten där package.json ligger
 
     - name: Build the app
+      working-directory: meetup-app  # Ange arbetskatalog för att bygga appen
       run: npm run build  # Bygg appen, se till att det finns ett build-skript i din package.json
 
     - name: Install Amplify CLI
+      working-directory: meetup-app  # Ange arbetskatalog för att installera Amplify CLI
       run: npm install -g @aws-amplify/cli  # Installera Amplify CLI
 
     - name: Deploy to AWS Amplify
+      working-directory: meetup-app  # Ange arbetskatalog för att publicera till Amplify
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Sätt dessa värden i GitHub Secrets
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
