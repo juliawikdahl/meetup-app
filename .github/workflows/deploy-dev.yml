@@ -3,7 +3,7 @@ name: Deploy to Dev
 on:
   push:
     branches:
-      - dev
+      - dev # Kör detta workflow varje gång det görs en push till dev-grenen.
 
 jobs:
   build:
@@ -11,26 +11,24 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: '20'  # eller versionen du använder
+          node-version: '16' # Välj den Node.js-version som används i din app.
 
       - name: Install dependencies
-        run: npm install
+        run: npm install # Installerar alla beroenden
 
-      - name: Build the app
-        run: npm run build
+      - name: Build the application
+        run: npm run build # Bygger applikationen (justera detta om ditt build-kommando är annorlunda)
 
-      - name: Configure AWS CLI
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Deploy to AWS Amplify
+        uses: aws-actions/aws-amplify@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Lagra din AWS Access Key i GitHub Secrets
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Lagra din AWS Secret Access Key i GitHub Secrets
-          aws-region: eu-north-1  # Välj din region
-
-      - name: Deploy to S3
-        run: |
-          aws s3 sync ./build s3://meetup-app-dev-project --delete
+          app-id: ${{ secrets.AMPLIFY_APP_ID }} # Ditt AWS Amplify-app-ID
+          branch-name: dev # Ange den branch som ska deployas
+          region: eu-north-1 # Ändra detta till din AWS-region
+          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} # Din AWS access key
+          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # Din AWS secret access key
