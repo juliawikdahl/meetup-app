@@ -1,0 +1,39 @@
+name: Deploy Frontend to AWS Amplify
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'  # Använd den version som krävs
+
+      - name: Install dependencies for frontend
+        run: |
+          cd frontend  # Gå till din frontend-mapp
+          npm install
+
+      - name: Build frontend
+        run: |
+          cd frontend  # Gå till din frontend-mapp
+          npm run build
+
+      - name: Deploy to AWS Amplify
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'eu-north-1'
+        run: |
+          cd frontend  # Gå till din frontend-mapp
+          npm install -g @aws-amplify/cli  # Installera Amplify CLI
+          amplify publish  # Publicera till AWS Amplify
