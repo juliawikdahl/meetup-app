@@ -1,4 +1,4 @@
-# .github/workflows/deploy-main.yml
+
 name: Deploy Frontend to AWS Amplify
 
 on:
@@ -17,19 +17,20 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '16'  # Du kan justera Node.js versionen om du behöver
+        node-version: '20'  # Använd Node.js version 20
 
     - name: Install dependencies
       run: npm install  # Installera beroenden i roten där package.json ligger
 
     - name: Build the app
-      run: npm run build  # Bygga appen, se till att det finns ett build-skript i din package.json
+      run: npm run build  # Bygg appen, se till att det finns ett build-skript i din package.json
+
+    - name: Install Amplify CLI
+      run: npm install -g @aws-amplify/cli  # Installera Amplify CLI
 
     - name: Deploy to AWS Amplify
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Sätt dessa värden i GitHub Secrets
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'eu-north-1'  # Ersätt med din region om det behövs
-      run: |
-        npm install -g @aws-amplify/cli  # Installera Amplify CLI
-        amplify publish  # Publicera till AWS Amplify
+      run: amplify publish  # Publicera till AWS Amplify
