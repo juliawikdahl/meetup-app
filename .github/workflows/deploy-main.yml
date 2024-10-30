@@ -3,7 +3,7 @@ name: Deploy Frontend to AWS Amplify
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   deploy:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'  # Använd den version som krävs
+          node-version: '20'
 
       - name: Install dependencies for frontend
         run: |
@@ -35,5 +35,5 @@ jobs:
           AWS_REGION: 'eu-north-1'
         run: |
           cd frontend  # Gå till din frontend-mapp
-          npm install -g @aws-amplify/cli  # Installera Amplify CLI
-          amplify publish  # Publicera till AWS Amplify
+          npm install -g @aws-amplify/cli
+          amplify publish
