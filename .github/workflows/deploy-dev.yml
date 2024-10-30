@@ -33,4 +33,5 @@ jobs:
 
     - name: Deploy to AWS Amplify
       run: |
+        set -x # Aktivera detaljerad loggning
         aws amplify start-deployment --app-id ${{ secrets.AMPLIFY_APP_ID }} --branch-name dev
